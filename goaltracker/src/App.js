@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Router } from 'react-router';
 import { Provider } from 'react-redux';
 import logo from './logo.svg';
-import { GoalsOverview } from './components';
+import { GoalDetail, GoalsOverview } from './components';
 import configureStore from './store';
 import './App.css';
 
@@ -14,6 +14,11 @@ const routes = [
     path: '/',
     component: GoalsOverview,
     private: false
+  },
+  {
+    path: '/GoalDetail/:goalID',
+    component: GoalDetail,
+    exact: false
   }
 ];
 
