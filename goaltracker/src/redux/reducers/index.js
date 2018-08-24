@@ -11,4 +11,5 @@ const bsReducer = (state = {}, action) => {
   }
 }
 
-export default combineReducers({ bsReducer });
+const reducers = combineReducers({ bsReducer });
+export { reducers as goaltracker};

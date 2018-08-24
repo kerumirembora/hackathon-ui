@@ -1,0 +1,27 @@
+.c-savingsgoal-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+.c-savingsgoal-wrapper-header {
+  display: flex;
+  background-color: #f7f7f8;
+  min-height: 15vh;
+}
+
+.c-savingsgoal-wrapper-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 85vh;
+  transform: translateY(-14%);
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+body {
+  margin: 0;
+}

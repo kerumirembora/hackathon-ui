@@ -3,13 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "materialize": "^1.0.0",
     "materialize-css": "^0.100.2",
+    "classnames": "^2.2.6",
+    "history": "^4.7.2",
     "react": "^16.4.2",
+    "react-document-title": "^2.0.3",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
+    "react-router": "^4.3.1",
+    "react-router-redux": "^4.0.8",
     "react-scripts": "1.1.5",
     "redux": "^4.0.0",
+    "redux-immutable-state-invariant": "^2.1.0",
+    "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0"
   },
   "scripts": {

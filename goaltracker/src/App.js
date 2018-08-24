@@ -1,19 +1,39 @@
 import React, { Component } from 'react';
+import { Route, Router } from 'react-router';
+import { Provider } from 'react-redux';
 import logo from './logo.svg';
+import { GoalsOverview } from './components';
+import configureStore from './store';
 import './App.css';
+
+const storeAndHistory = configureStore();
+
+const routes = [
+  {
+    exact: true,
+    path: '/',
+    component: GoalsOverview,
+    private: false
+  }
+];
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <Provider store={storeAndHistory.store} >
+        <Router history={storeAndHistory.history}>
+          <div>
+            {routes.map(route => (
+              <Route
+                key={`route-${route.path}`}
+                exact={route.exact || false}
+                path={route.path}
+                component={route.component}
+              />
+            ))}
+          </div>
+        </Router>
+      </Provider> 
     );
   }
 }
