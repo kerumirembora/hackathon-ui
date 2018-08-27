@@ -11,7 +11,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
-  <Provider store={configureStore()}>
+  <Provider store={configureStore().store}>
     <App />
   </Provider>
   , 
