@@ -14,8 +14,12 @@ const listStyle = {
   height: "100%"
 };
 
+const cardItemStyle = {
+  cursor: "pointer"
+};
+
 const GoalsOverviewItem = ({ openGoal, name, unit, progress, limit, id }) => (
-  <div className="card" onClick={() => openGoal(id)}>
+  <div className="card" onClick={() => openGoal(id)} style={cardItemStyle}>
     <div className="card-content">
       <div>
         {name}

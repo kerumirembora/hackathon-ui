@@ -13,6 +13,7 @@ const categories = [
 const styleCardItem = {
     // height: "173px",
     // overflow: "hidden"
+    cursor: "pointer"
 };
 
 const GoalsCategoriesItem = ({ name, id, img }) => (
