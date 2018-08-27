@@ -12,13 +12,14 @@ class MenuWrapper extends React.Component {
     const { children, heading } = this.props;
     return(
       <Wrapper heading={heading}>
-        <div style={{ height: "100%" }}>
+        <div>
           <nav style={{ marginBottom: "0px" }}>
             <div className="nav-wrapper">
               <a href="#" className="brand-logo center">STracker</a>
               <a href="#" data-target="nav-mobile" className="sidenav-trigger"><i className="material-icons">menu</i></a>
               <ul id="nav-mobile" className="sidenav">
-                <li><a href="sass.html">Menu</a></li>
+                <li><a href="sass.html">Menu Item 1</a></li>
+                <li><a href="sass.html">Menu Item 2</a></li>
               </ul>
             </div>
           </nav>        
