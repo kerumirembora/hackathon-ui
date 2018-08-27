@@ -2,35 +2,25 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import MenuWrapper from './../MenuWrapper';
+import ProgressIndicator from './../ProgressIndicator';
 
 const goalData = [
   { id: 1, name: "Facebook", unit: "mins", progress: 20, limit: 100 },
-  { id: 2, name: "Curse Jar", unit: "curses", progress: 10, limit: 30 }
+  { id: 2, name: "Curse Jar", unit: "curses", progress: 3, limit: 30 }
 ];
 
-const listStyle = {};
-const unitLabelStyle = {
-  textAlign: 'right'
+const listStyle = {
+  backgroundColor: "white",
+  height: "100%"
 };
 
-const getProgress = (progress, limit) => {
-  return {
-    width: (progress / limit * 100) + "%"
-  };
-}
-
 const GoalsOverviewItem = ({ openGoal, name, unit, progress, limit, id }) => (
-  <div class="card" onClick={() => openGoal(id)}>
-    <div class="card-content">
+  <div className="card" onClick={() => openGoal(id)}>
+    <div className="card-content">
       <div>
         {name}
       </div>
-      <div class="progress">
-        <div class="determinate" style={getProgress(progress, limit)}></div> 
-      </div>
-      <div style={unitLabelStyle}>
-        { progress + "/" + limit + " " + unit }
-      </div>
+      <ProgressIndicator unit={unit} progress={progress} limit={limit} />
     </div>
   </div>
 );
@@ -46,9 +36,7 @@ class GoalsOverviewComponent extends React.Component {
         <div style={listStyle}>
           {
             goalData.map(goal => 
-              (
-                <GoalsOverviewItem name={goal.name} progress={goal.progress} limit={goal.limit} unit={goal.unit} id={goal.id} openGoal={openGoal} />
-              )
+              (<GoalsOverviewItem name={goal.name} progress={goal.progress} limit={goal.limit} unit={goal.unit} id={goal.id} openGoal={openGoal} key={ "goalElement_" + goal.id } />)
             )
           }
         </div>
@@ -57,8 +45,7 @@ class GoalsOverviewComponent extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-};
+const mapStateToProps = state => ( {} );
 
 const mapDispatchToProps = dispatch => {
   return {

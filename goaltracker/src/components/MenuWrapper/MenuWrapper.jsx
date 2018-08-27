@@ -7,8 +7,8 @@ const MenuWrapper = ({
 }) => {
   return(
     <Wrapper heading={heading}>
-      <div>
-        <nav>
+      <div style={{ height: "100%" }}>
+        <nav style={{ marginBottom: "0px" }}>
           <div className="nav-wrapper">
             <a href="#" className="brand-logo right">STracker</a>
             <ul id="nav-mobile" className="left hide-on-med-and-down">

@@ -4,13 +4,12 @@ import classNameCreator from 'classnames';
 import DocumentTitle from 'react-document-title';
 import './Wrapper.scss';
 
-const backgroundElement = {
-  backgroundColor: 'rgb(247, 247, 248)'
-};
 
 const mainElementStyle = {
   maxWidth: '480px',
-  //padding: '5px 5px 5px 5px',
+  minHeight: '790px',
+  height: '790px',
+  backgroundColor: 'white',
   margin: 'auto'
 };
 
@@ -24,20 +23,16 @@ const Wrapper = ({
     }
   );
 
-
   return(
     <div className={classNames}>
       <div className="c-savingsgoal-wrapper-header">
         <DocumentTitle title={heading} />
       </div>
       <div className="c-savingsgoal-wrapper-content">
-        <div style={backgroundElement}>
-          <div style={mainElementStyle}>
-            {children}
-          </div>
+        <div style={mainElementStyle}>
+          {children}
         </div>
       </div>
-      
     </div>
   )
 }
