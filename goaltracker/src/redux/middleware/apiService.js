@@ -8,17 +8,21 @@ export const getOptions = ({ method, body, headerData = {} }) => {
     'Content-Type': 'application/json'
   };
 
-  return ({
-    mode: "no-cors",
-    method: method,
-    body: body ? JSON.stringify(body) : undefined,
-    headers: headers
-  })
+  return (
+    {
+      mode: "cors",
+      method: method,
+      body: body ? JSON.stringify(body) : undefined,
+      headers: headers
+    }
+  );
 }
 
 export const fetchFromApi = ({ path, method, body, headerData }) => {
   const options = { path, method, body, headerData };
-  fetch(getUrl(path), getOptions(options))
+
+  const opt = getOptions(options);
+  fetch(getUrl(path), opt)
     .then((response) => {
       if (response.ok) {
         return response.json();

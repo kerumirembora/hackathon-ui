@@ -13,7 +13,7 @@ export const fetchDataEpic = (actionType, work, okActionCreator, errorActionCrea
 
 const postUserAPI = action => {
   const requestBody = {
-    username: action.payload.user
+    UserName: action.payload.user
   }
   return Promise.all([
     fetchFromApi({

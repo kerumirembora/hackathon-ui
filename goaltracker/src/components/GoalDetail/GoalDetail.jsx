@@ -104,7 +104,7 @@ class GoalDetailComponent extends React.Component {
           <SocialSection />
 
           <div style={{ marginTop: "auto", backgroundColor: "#EE6E73", textAlign: "center", paddingTop: "8px", paddingBottom: "8px" }}>
-            <a className="waves-effect waves-light btn red" onClick={() => testUserPost("lala")}><i className="material-icons left">add_box</i>Actions</a>
+            <a className="waves-effect waves-light btn red" onClick={() => testUserPost("JohnDoe")}><i className="material-icons left">add_box</i>Actions</a>
             &nbsp;&nbsp;
             <a className="waves-effect waves-light btn red"><i className="material-icons left">group</i>Social</a>
           </div>
