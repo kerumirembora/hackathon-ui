@@ -21,7 +21,7 @@ const categories = [
         id: 3, 
         name: "Curse Jar", 
         img: "https://www.thetimes.co.uk/imageserver/image/methode%2Ftimes%2Fprod%2Fweb%2Fbin%2F67767244-0b54-11e7-85f8-9e9ad2f5cb5c.jpg?crop=3469%2C1951%2C311%2C2266&resize=685",
-        description: "For whenever I say something unappropriate"
+        description: "For whenever I say something inappropriate"
     }
 ];
 
