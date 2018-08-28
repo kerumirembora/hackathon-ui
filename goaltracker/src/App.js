@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Router } from 'react-router';
 import { Provider } from 'react-redux';
 import logo from './logo.svg';
-import { GoalDetail, GoalsOverview, GoalsCategories } from './components';
+import { GoalDetail, GoalsOverview, GoalsCategories, GoalCategoryDetail } from './components';
 import configureStore from './store';
 import './App.css';
 
@@ -23,12 +23,12 @@ const routes = [
   {
     path: '/GoalsCategories',
     component: GoalsCategories
-  }/*,
+  },
   {
-    path: '/GoalsCategory/:catID',
-    component: GoalsCategoryDetail,
+    path: '/GoalCategory/:catID',
+    component: GoalCategoryDetail,
     exact: false
-  }*/
+  }
 ];
 
 class App extends Component {

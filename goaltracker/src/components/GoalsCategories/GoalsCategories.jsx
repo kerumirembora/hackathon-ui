@@ -9,7 +9,7 @@ const categories = [
         id: 1, 
         name: "Social", 
         img: "https://financialtribune.com/sites/default/files/styles/slideshow/public/field/image/shahrivar1/12_Social%20Media%20%281%29.jpg?itok=WU4SVOlO&c=a30dbb2db167c853d8c65a6b85b89f8a",
-        description: "How much time I sepend in social media"
+        description: "My social media activities"
     },
     { 
         id: 2, 
@@ -49,8 +49,8 @@ const styleDarkOverlay = {
     opacity: 0.3
 };
 
-const GoalsCategoriesItem = ({ name, id, img, description }) => (
-    <div className="card small hoverable" style={styleCardItem}>
+const GoalsCategoriesItem = ({ name, id, img, description, openCategory }) => (
+    <div className="card small hoverable" style={styleCardItem} onClick={() => openCategory(id)}>
         <div className="card-image" style={styleCardImgContainer}>
           <img src={img} style={styleCardImg}/>
           <span className="card-title" style={styleCardTitle}>{name}</span>
@@ -64,11 +64,12 @@ const GoalsCategoriesItem = ({ name, id, img, description }) => (
 
 class GoalsCategoriesComponent extends React.Component {
     render() {
+        const { openCategory } = this.props;
         return (
             <MenuWrapper heading="Goals Categories">
                 <div className="categories-wrapper">
                     {categories.map(cat => 
-                        <GoalsCategoriesItem name={cat.name} id={cat.id} img={cat.img} key={ "categoryElement_" + cat.id } description={cat.description} />
+                        <GoalsCategoriesItem name={cat.name} id={cat.id} img={cat.img} key={ "categoryElement_" + cat.id } description={cat.description} openCategory={openCategory} />
                     )}
                 </div>
             </MenuWrapper>
@@ -80,7 +81,9 @@ const mapStateToProps = state => ( {} );
 
 const mapDispatchToProps = dispatch => {
   return {
-      // add function to go to the category details
+    openCategory: (id) => {
+        dispatch(push('/GoalCategory/' + id));
+    }
   }
 };
 
