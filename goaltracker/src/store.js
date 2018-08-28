@@ -4,6 +4,8 @@ import thunkMiddleware from 'redux-thunk';
 import { goaltracker } from './redux/reducers';
 import { createHashHistory as createHistory } from 'history';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
+import { createEpicMiddleware } from 'redux-observable';
+import rootEpic from './redux/epics';
 
 let storeAndHistoryInstance = null;
 
@@ -15,7 +17,10 @@ export default function configureStore(initialState={}) {
   const history = createHistory();
   const historyMiddleware = routerMiddleware(history);
 
+  const epicMiddleware = createEpicMiddleware();
+
   const middleware = [
+    epicMiddleware,
     historyMiddleware,
     reduxImmutableStateInvariant(),
     thunkMiddleware
@@ -30,6 +35,8 @@ export default function configureStore(initialState={}) {
   const store = createStore(
     rootReducer, initialState, composeEnhancers(applyMiddleware(...middleware))
   );
+
+  epicMiddleware.run(rootEpic);
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
