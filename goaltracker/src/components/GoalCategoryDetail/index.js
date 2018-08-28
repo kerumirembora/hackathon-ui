@@ -1,0 +1,1 @@
+export { GoalCategoryDetail } from './GoalCategoryDetail';

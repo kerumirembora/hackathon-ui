@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import { string } from 'prop-types';
 import { Wrapper } from '../Wrapper';
 
+const styleMenuBtn = {
+  display: "block"
+};
+
 class MenuWrapper extends React.Component {
   componentDidMount() {
     window.$('.sidenav').sidenav();
@@ -15,8 +19,8 @@ class MenuWrapper extends React.Component {
         <div>
           <nav style={{ marginBottom: "0px" }}>
             <div className="nav-wrapper">
-              <a href="#" className="brand-logo center">STracker</a>
-              <a href="#" data-target="nav-mobile" className="sidenav-trigger"><i className="material-icons">menu</i></a>
+              <a href="/" className="brand-logo center">STracker</a>
+              <a href="/" data-target="nav-mobile" className="sidenav-trigger" style={styleMenuBtn}><i className="material-icons">menu</i></a>
               <ul id="nav-mobile" className="sidenav">
                 <li><a href="sass.html">Menu Item 1</a></li>
                 <li><a href="sass.html">Menu Item 2</a></li>

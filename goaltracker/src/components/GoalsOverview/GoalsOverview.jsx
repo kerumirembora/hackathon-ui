@@ -14,8 +14,12 @@ const listStyle = {
   height: "100%"
 };
 
+const cardItemStyle = {
+  cursor: "pointer"
+};
+
 const GoalsOverviewItem = ({ openGoal, name, unit, progress, limit, id }) => (
-  <div className="card" onClick={() => openGoal(id)}>
+  <div className="card hoverable" onClick={() => openGoal(id)} style={cardItemStyle}>
     <div className="card-content">
       <div>
         {name}
@@ -28,7 +32,8 @@ const GoalsOverviewItem = ({ openGoal, name, unit, progress, limit, id }) => (
 class GoalsOverviewComponent extends React.Component {
   render() {
     const {
-      openGoal
+      openGoal,
+      chooseCategory
     } = this.props;
     
     return (
@@ -39,6 +44,10 @@ class GoalsOverviewComponent extends React.Component {
               (<GoalsOverviewItem name={goal.name} progress={goal.progress} limit={goal.limit} unit={goal.unit} id={goal.id} openGoal={openGoal} key={ "goalElement_" + goal.id } />)
             )
           }
+        </div>
+
+        <div style={{ marginTop: "auto", backgroundColor: "#EE6E73", textAlign: "center", paddingTop: "8px", paddingBottom: "8px" }}>
+          <a className="waves-effect waves-light btn red" onClick={() => chooseCategory()}><i className="material-icons left">add_box</i>Add Goal</a>
         </div>
       </MenuWrapper>
     );
@@ -51,6 +60,9 @@ const mapDispatchToProps = dispatch => {
   return {
     openGoal: (id) => {
       dispatch(push('/GoalDetail/' + id));
+    },
+    chooseCategory: () => {
+      dispatch(push('/GoalsCategories'));
     }
   }
 };
