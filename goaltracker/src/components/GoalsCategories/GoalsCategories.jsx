@@ -82,7 +82,7 @@ const mapStateToProps = state => ( {} );
 const mapDispatchToProps = dispatch => {
   return {
     openCategory: (id) => {
-        dispatch(push('/GoalCategory/' + id));
+        dispatch(push(`/goals-categories/${id}/new`));
     }
   }
 };

@@ -79,10 +79,10 @@ const mapStateToProps = state => ( {} );
 const mapDispatchToProps = dispatch => {
   return {
     openGoal: (id) => {
-      dispatch(push('/GoalDetail/' + id));
+      dispatch(push(`/goals/${id}`));
     },
     chooseCategory: () => {
-      dispatch(push('/GoalsCategories'));
+      dispatch(push('/goals-categories'));
     }
   }
 };
