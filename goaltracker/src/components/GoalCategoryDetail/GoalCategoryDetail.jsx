@@ -6,19 +6,22 @@ const categories = [
         id: 1, 
         name: "Social", 
         img: "https://financialtribune.com/sites/default/files/styles/slideshow/public/field/image/shahrivar1/12_Social%20Media%20%281%29.jpg?itok=WU4SVOlO&c=a30dbb2db167c853d8c65a6b85b89f8a",
-        description: "My social media activities"
+        description: "My social media activities",
+        unit: "mins"
     },
     { 
         id: 2, 
         name: "Trip", 
         img: "https://media.timeout.com/images/101594229/630/472/image.jpg",
-        description: "Going on a trip"
+        description: "Going on a trip",
+        unit: "kr"
     },
-    { 
+    {
         id: 3, 
         name: "Curse Jar", 
         img: "https://www.thetimes.co.uk/imageserver/image/methode%2Ftimes%2Fprod%2Fweb%2Fbin%2F67767244-0b54-11e7-85f8-9e9ad2f5cb5c.jpg?crop=3469%2C1951%2C311%2C2266&resize=685",
-        description: "For whenever I say something inappropriate"
+        description: "For whenever I say something inappropriate",
+        unit: "curses"
     }
 ];
 
@@ -79,26 +82,25 @@ class GoalCategoryDetailComponent extends React.Component {
                     <form>
                         <div className="row">
                             <div className="input-field col s12">
-                                <i className="material-icons prefix">account_circle</i>
+                                <i className="material-icons prefix">place</i>
                                 <input id="name" type="text" className="validate" />
                                 <label htmlFor="name">Goal Name</label>
                             </div>
                         </div>
                         <div className="row">
                             <div className="input-field col s6">
-                                <i className="material-icons prefix">account_circle</i>
-                                <input id="amount" type="text" className="validate" />
+                                <i className="material-icons prefix">exposure</i>
+                                <input id="amount" type="number" className="validate" />
                                 <label htmlFor="amount">Amount</label>
                             </div>
                             <div className="input-field col s6">
-                                <i className="material-icons prefix">account_circle</i>
-                                <input id="unit" type="text" className="validate" />
-                                <label htmlFor="unit">Unit</label>
+                                <input disabled id="unit" type="text" className="validate" value={this.cat.unit} />
+                                <label htmlFor="unit" className="active">Unit</label>
                             </div>
                         </div>
                         <div className="row">
                             <div className="input-field col s12">
-                                <i className="material-icons prefix">account_circle</i>
+                                <i className="material-icons prefix">event</i>
                                 <input id="endDate" type="text" className="datepicker" />
                                 <label htmlFor="endDate">End Date</label>
                             </div>
