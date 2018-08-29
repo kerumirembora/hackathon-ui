@@ -1,5 +1,5 @@
 import React from 'react';
-import MenuWrapper from './../MenuWrapper';
+import MenuWrapper from '../MenuWrapper';
 
 const categories = [
     { 
@@ -57,7 +57,7 @@ const styleDarkOverlay = {
     opacity: 0.3
 };
 
-class GoalCategoryDetailComponent extends React.Component {
+class CreateGoalComponent extends React.Component {
     componentWillMount() {
         this.cat = getCategory(parseInt(this.props.match.params.catID));
     }
@@ -116,4 +116,4 @@ class GoalCategoryDetailComponent extends React.Component {
     }
 }
 
-export const GoalCategoryDetail = GoalCategoryDetailComponent;
+export const CreateGoal = CreateGoalComponent;
