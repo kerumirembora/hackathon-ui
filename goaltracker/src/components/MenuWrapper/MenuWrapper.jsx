@@ -1,7 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import { string } from 'prop-types';
 import { Wrapper } from '../Wrapper';
+
+const customBadgeStyle = {
+  backgroundColor: "red",
+  borderRadius: "50%",
+  padding: "6px",
+  position: "absolute",
+  top: "17px",
+  left: "28px"
+};
+
+const notificationBtnStyle = {
+  position: "relative"
+};
 
 class MenuWrapper extends React.Component {
   componentDidMount() {
@@ -9,7 +23,13 @@ class MenuWrapper extends React.Component {
   }
 
   render() {
-    const { children, heading, onBack } = this.props;
+    const { 
+      children,
+      heading,
+      onBack,
+      openNotifications
+    } = this.props;
+
     let styleMenuBtn = {
       display: "block"
     };
@@ -30,7 +50,12 @@ class MenuWrapper extends React.Component {
               <a href="/" data-target="nav-mobile" className="sidenav-trigger menu-button" style={styleMenuBtn}><i className="material-icons">menu</i></a>
               {onBackButton}
               <ul className="right">
-                <li><a href="/" className="notification-button"><i className="material-icons">notifications</i></a></li>
+                <li>
+                  <a className="notification-button" style={notificationBtnStyle} onClick={() => openNotifications()}>
+                    <i className="material-icons">notifications</i>
+                    <div className="custom-badge z-depth-1" style={customBadgeStyle}></div>
+                  </a>
+                </li>
               </ul>
               <ul id="nav-mobile" className="sidenav">
                 <li><a href="sass.html"><i className="material-icons left">person</i>My Profile</a></li>
@@ -50,9 +75,16 @@ Wrapper.propTypes = {
 }
 
 const mapStateToProps = state => {
-  // return { children, heading } = state;
   return state;
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    openNotifications: () => {
+      dispatch(push('/notifications'));
+    }
+  }
+};
+
 // export default MenuWrapper;
-export default connect(mapStateToProps, null)(MenuWrapper);
+export default connect(mapStateToProps, mapDispatchToProps)(MenuWrapper);

@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import { Route, Router } from 'react-router';
 import { Provider } from 'react-redux';
 import logo from './logo.svg';
-import { GoalDetail, GoalsOverview, GoalsCategories, CreateGoal } from './components';
+import {
+  GoalDetail,
+  GoalsOverview,
+  GoalsCategories,
+  CreateGoal,
+  Notifications
+} from './components';
 import configureStore from './store';
 import './App.css';
 
@@ -29,6 +35,11 @@ const routes = [
     path: '/goals-categories/:catID/new',
     component: CreateGoal,
     exact: false
+  },
+  {
+    path: '/notifications',
+    component: Notifications,
+    exact: true
   }
 ];
 

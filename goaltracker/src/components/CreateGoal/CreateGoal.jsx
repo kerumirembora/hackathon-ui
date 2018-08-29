@@ -95,7 +95,7 @@ class CreateGoalComponent extends React.Component {
                             <div className="input-field col s6">
                                 <i className="material-icons prefix">exposure</i>
                                 <input id="amount" type="number" className="validate" />
-                                <label htmlFor="amount">Amount</label>
+                                <label htmlFor="amount">Amount/Limit</label>
                             </div>
                             <div className="input-field col s6">
                                 <input disabled id="unit" type="text" className="validate" value={this.cat.unit} />
