@@ -72,7 +72,7 @@ class CreateGoalComponent extends React.Component {
         const { goBack } = this.props;
 
         return (
-            <MenuWrapper heading="Goal Category Detail" onBack={goBack}>
+            <MenuWrapper heading="New Goal" onBack={goBack}>
                 <div className="category-detail-wrapper" style={wrapperStyle}>
 
                     <div className="card" style={styleCardItem}>
