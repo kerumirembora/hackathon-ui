@@ -29,6 +29,9 @@ class MenuWrapper extends React.Component {
               <a href="/" className="brand-logo center">STracker</a>
               <a href="/" data-target="nav-mobile" className="sidenav-trigger menu-button" style={styleMenuBtn}><i className="material-icons">menu</i></a>
               {onBackButton}
+              <ul className="right">
+                <li><a href="/" className="notification-button"><i className="material-icons">notifications</i></a></li>
+              </ul>
               <ul id="nav-mobile" className="sidenav">
                 <li><a href="sass.html"><i className="material-icons left">person</i>My Profile</a></li>
                 <li><a href="sass.html"><i className="material-icons left">settings</i>Settings</a></li>
