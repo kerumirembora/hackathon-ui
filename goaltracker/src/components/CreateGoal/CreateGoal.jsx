@@ -1,5 +1,7 @@
 import React from 'react';
-import MenuWrapper from '../MenuWrapper';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
+import MenuWrapper from './../MenuWrapper';
 
 const categories = [
     { 
@@ -67,13 +69,15 @@ class CreateGoalComponent extends React.Component {
     }
 
     render() {
+        const { goBack } = this.props;
+
         return (
-            <MenuWrapper heading="Goal Category Detail">
+            <MenuWrapper heading="Goal Category Detail" onBack={goBack}>
                 <div className="category-detail-wrapper" style={wrapperStyle}>
 
                     <div className="card" style={styleCardItem}>
                         <div className="card-image" style={styleCardImgContainer}>
-                            <img src={this.cat.img} style={styleCardImg}/>
+                            <img src={this.cat.img} style={styleCardImg} alt={this.cat.name}/>
                             <span className="card-title" style={styleCardTitle}>{this.cat.name}</span>
                             <div className="dark-overlay" style={styleDarkOverlay}></div>
                         </div>
@@ -116,4 +120,15 @@ class CreateGoalComponent extends React.Component {
     }
 }
 
-export const CreateGoal = CreateGoalComponent;
+const mapStateToProps = state => ( {} );
+
+const mapDispatchToProps = dispatch => {
+  return {
+    goBack: (ev) => {
+        ev.preventDefault();
+        dispatch(push('/goals-categories'));
+    }
+  }
+};
+
+export const CreateGoal = connect(mapStateToProps, mapDispatchToProps)(CreateGoalComponent);

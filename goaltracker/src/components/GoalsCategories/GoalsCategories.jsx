@@ -52,7 +52,7 @@ const styleDarkOverlay = {
 const GoalsCategoriesItem = ({ name, id, img, description, openCategory }) => (
     <div className="card small hoverable" style={styleCardItem} onClick={() => openCategory(id)}>
         <div className="card-image" style={styleCardImgContainer}>
-          <img src={img} style={styleCardImg}/>
+          <img src={img} style={styleCardImg} alt={name}/>
           <span className="card-title" style={styleCardTitle}>{name}</span>
           <div className="dark-overlay" style={styleDarkOverlay}></div>
         </div>
