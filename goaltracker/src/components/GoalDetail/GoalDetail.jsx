@@ -2,12 +2,27 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import MenuWrapper from './../MenuWrapper';
+import Metrics from './../Metrics';
 import ProgressIndicator from './../ProgressIndicator';
 import { actions } from '../../redux/actions/user';
 
 const goalData = [
   { id: 1, name: "Facebook", unit: "mins", progress: 20, limit: 100 },
   { id: 2, name: "Curse Jar", unit: "curses", progress: 3, limit: 30 }
+];
+
+const newGoalData = [
+  { id: 1, name: "Facebook", deadline: new Date('2018-09-03'), metrics: [
+    { description: "Time spent on facebook", unit: "mins", amount: 20, limit: 100 },
+    { description: "Amount saved", unit: "NOK", amount: 10 } 
+  ]},
+  { id: 2, name: "Curse Jar", deadline: new Date('2018-09-03'), metrics: [
+    { description: "Curses said", unit: "curses", amount: 3, limit: 30 },
+    { description: "Amount saved", unit: "NOK", amount: 30 } 
+  ]},
+  { id: 3, name: "Test Goal", deadline: new Date('2018-09-03'), metrics: [
+    { description: "Test metric", unit: "unit", amount: 7, limit: 27 }
+  ]}
 ];
 
 const eventData = [
@@ -19,8 +34,8 @@ const eventData = [
 ];
 
 const getGoal = (id) => {
-  for (let i = 0; i < goalData.length; i++) {
-    var element = goalData[i];
+  for (let i = 0; i < newGoalData.length; i++) {
+    var element = newGoalData[i];
     if (element.id === id)
       return element;
   }
@@ -95,8 +110,12 @@ class GoalDetailComponent extends React.Component {
       <MenuWrapper heading="Goal Detail">
         <div style={mainElementStyle}>
           <div style={{ textAlign: "center", paddingTop: "10px", fontSize: "30px" }}>{this.goal.name}</div>
-          <div style={{ paddingLeft: "15px", paddingRight: "15px", marginTop: "15px" }}>
-            <ProgressIndicator unit={this.goal.unit} progress={this.goal.progress} limit={this.goal.limit} />
+          <div style={{ display: "flex", paddingLeft: "15px", paddingTop: "10px" }}>
+            <div style={{ paddingLeft: "0px", paddingTop: "0px", fontWeight: "bold" }}>Deadline:</div>
+            <div style={{ paddingLeft: "10px", paddingTop: "0px" }}>{this.goal.deadline.toLocaleDateString()}</div>
+          </div>
+          <div style={{ paddingLeft: "15px", paddingRight: "15px", marginTop: "10px" }}>
+            <Metrics metrics={this.goal.metrics} />
           </div>
           <hr style={horizontalSeparator}/>
           <GoalEventList goalId={this.goal.id} />

@@ -1,22 +1,26 @@
 import React from 'react';
 
-const getProgress = (progress, limit) => {
+const getProgress = (amount, limit) => {
   return {
-    width: (progress / limit * 100) + "%"
+    width: (amount / limit * 100) + "%"
   };
 };
 
 const unitLabelStyle = {
-  textAlign: 'right'
+  textAlign: 'right',
+  width: "35%"
 };
 
-const ProgressIndicator = ({progress, limit, unit}) => (
+const ProgressIndicator = ({ description, amount, limit, unit }) => (
   <div>
-    <div className="progress">
-      <div className="determinate" style={getProgress(progress, limit)}></div> 
+    <div style={{ display: "flex", width: "100%" }}>
+      <div style={{ width: "65%" }}>{description}</div>
+      <div style={unitLabelStyle}>
+        { amount + "/" + limit + " " + unit }
+      </div>
     </div>
-    <div style={unitLabelStyle}>
-      { progress + "/" + limit + " " + unit }
+    <div className="progress">
+      <div className="determinate" style={getProgress(amount, limit)}></div> 
     </div>
   </div>
 );
