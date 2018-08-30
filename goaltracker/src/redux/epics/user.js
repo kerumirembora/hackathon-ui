@@ -34,7 +34,7 @@ export const postUserEpic = fetchDataEpic(
 const getUserGoalDetailsAPI = (action, store) => {  
   return Promise.all([
     fetchFromApi({
-      path: endpoints.userGoalDetails(store.goaltracker.user.userData.id, action.goalId), 
+      path: endpoints.userGoalDetails(action.payload.userId, action.payload.goalId), 
       method: 'GET'
     })
   ]).then(result => result[0]);

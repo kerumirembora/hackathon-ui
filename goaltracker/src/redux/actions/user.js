@@ -6,8 +6,8 @@ const USER_GET_DATA_ERROR = `${actionTypePrefix}/getData/error`;
 const getUserData = payload => ({ type: USER_GET_DATA, payload });
 
 const USER_GET_GOAL_DATA = `${actionTypePrefix}/getGoalData`;
-const USER_GET_GOAL_DATA_DONE = `${actionTypePrefix}/getData/done`;
-const USER_GET_GOAL_DATA_ERROR = `${actionTypePrefix}/getData/error`;
+const USER_GET_GOAL_DATA_DONE = `${actionTypePrefix}/getGoalData/done`;
+const USER_GET_GOAL_DATA_ERROR = `${actionTypePrefix}/getGoalData/error`;
 const getUserGoalData = payload => ({ type: USER_GET_GOAL_DATA, payload });
 
 export const types = {

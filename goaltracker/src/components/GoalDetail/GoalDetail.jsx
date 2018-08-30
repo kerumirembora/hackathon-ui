@@ -99,9 +99,7 @@ const getGoalEvents = (goalId) => {
 
 const alternatingColor = [ 'gainsboro', 'white' ];
 
-const GoalEventList = ({goalId}) => {
-  var goalEventData = getGoalEvents(goalId);
-
+const GoalEventList = ({ goalEventData }) => {
   return (
     <div>
       <div style= {{ fontSize: "18px", paddingLeft: "10px" }}>Last events</div>
@@ -110,12 +108,12 @@ const GoalEventList = ({goalId}) => {
         ? (<div style={{ margin: "10px" }}>No events to show for this goal yet.</div>)
         : (<div style= {{ margin: "10px", border: "solid 1px gray" }}>
           {
-            goalEventData.map((goal, index) => 
+            goalEventData.map((event, index) => 
               (
                 <div style={{ paddingLeft: "5px", paddingTop: "2px", paddingBottom: "2px", display: "flex", backgroundColor: alternatingColor[index % alternatingColor.length] }}
-                    key={"event_" + goal.id + "_" + goal.date.toString()}> 
-                  <div style={{ width: "25%", fontSize: "8pt" }}>{goal.date.toLocaleString()}</div>
-                  <div style={{ width: "75%", fontSize: "8pt" }}>{goal.message}</div>
+                    key={"event_" + event.id + "_" + (new Date(event.creationDate)).toString()}> 
+                  <div style={{ width: "25%", fontSize: "8pt" }}>{(new Date(event.creationDate)).toLocaleString()}</div>
+                  <div style={{ width: "75%", fontSize: "8pt" }}>{event.description}</div>
                 </div>
               )
             )
@@ -126,8 +124,8 @@ const GoalEventList = ({goalId}) => {
   );
 }
 
-const SocialSection = ({ goalId, addUsers }) => {
-  var friendsData = getFriends(goalId);
+const SocialSection = ({ friendsData, goalId, addUsers }) => {
+  //var friendsData = getFriends(goalId);
 
   return (
     <div>
@@ -136,8 +134,8 @@ const SocialSection = ({ goalId, addUsers }) => {
         (friendsData.length === 0) 
           ? (<div style={{ margin: "10px" }}>No friends added to goal yet; add friends to track goals as a group.</div>)
           : friendsData.map(element => (
-            <div style={{ margin: "10px", width: "100%" }}>
-              <i className="material-icons left">person</i>{element.username}
+            <div style={{ margin: "10px", width: "100%" }} key={"user_" + element.name}>
+              <i className="material-icons left">person</i>{element.name}
             </div>
           ))
       }
@@ -159,7 +157,7 @@ class GoalDetailComponent extends React.Component {
 
   componentWillMount() {
     const goalId = parseInt(this.props.match.params.goalID);
-    this.props.getGoalDetails(goalId);
+    this.props.getGoalDetails(goalId, this.props.userId);
   }
 
   showSocialActions() {
@@ -171,9 +169,8 @@ class GoalDetailComponent extends React.Component {
   }
 
   render() {
-    const { addUsers } = this.props;
+    const { addUsers, goal } = this.props;
     const { socialActionsVisible } = this.state;
-    const { goal } = this.props;
 
     return (
       <MenuWrapper heading="Goal Detail">
@@ -187,9 +184,9 @@ class GoalDetailComponent extends React.Component {
             <Metrics metrics={goal.metrics} />
           </div>
           <hr style={horizontalSeparator}/>
-          <GoalEventList goalId={goal.id} />
+          <GoalEventList goalEventData={goal.loggedUserEvents} />
           <hr style={horizontalSeparator}/>
-          <SocialSection goalId={goal.id} addUsers={addUsers} />
+          <SocialSection goalId={goal.id} addUsers={addUsers} friendsData={goal.participatingUsers.filter(el => el.id !== this.props.userId)} />
 
           <div style={{ marginTop: "auto", backgroundColor: "#EE6E73", textAlign: "center", paddingTop: "8px", paddingBottom: "8px", position: "relative" }}>
             <a className="waves-effect waves-light btn red"><i className="material-icons left">add_box</i>Actions</a>
@@ -215,7 +212,8 @@ class GoalDetailComponent extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    goal: state.goaltracker.user.userGoalData
+    goal: state.goaltracker.user.userGoalData,
+    userId: state.goaltracker.user.userData.id
   };
 }
 
@@ -224,8 +222,8 @@ const mapDispatchToProps = dispatch => {
     addUsers: (goalId) => {
       dispatch(push(`/add-friends/${goalId}`));
     },
-    getGoalDetails: (goalId) => {
-      dispatch(actions.getUserGoalData({ goalId }));
+    getGoalDetails: (goalId, userId) => {
+      dispatch(actions.getUserGoalData({ goalId, userId }));
     }
   };
 }

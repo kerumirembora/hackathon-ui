@@ -3,6 +3,11 @@ export default {
     user: {
       userData: {
         goals: []
+      },
+      userGoalData: {
+        metrics: [],
+        participatingUsers: [],
+        loggedUserEvents: []
       }
     },
     goal: {
