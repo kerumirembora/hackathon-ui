@@ -187,7 +187,7 @@ class GoalDetailComponent extends React.Component {
           <hr style={horizontalSeparator}/>
           <SocialSection goalId={this.goal.id} />
 
-          <div style={{ marginTop: "auto", backgroundColor: "#EE6E73", textAlign: "center", paddingTop: "8px", paddingBottom: "8px" }}>
+          <div style={{ marginTop: "auto", backgroundColor: "#EE6E73", textAlign: "center", paddingTop: "8px", paddingBottom: "8px", position: "relative" }}>
             <a className="waves-effect waves-light btn red"><i className="material-icons left">add_box</i>Actions</a>
 
             &nbsp;&nbsp;
@@ -214,7 +214,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-
+  return {};
 }
 
 export const GoalDetail = withRouter(connect(mapStateToProps, mapDispatchToProps)(GoalDetailComponent));

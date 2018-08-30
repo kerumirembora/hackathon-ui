@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import MenuWrapper from './../MenuWrapper';
+import { actions } from '../../redux/actions/goal';
 
 const categories = [
     { 
@@ -12,14 +13,14 @@ const categories = [
         unit: "mins"
     },
     { 
-        id: 2, 
+        id: 3, 
         name: "Trip", 
         img: "https://media.timeout.com/images/101594229/630/472/image.jpg",
         description: "Going on a trip",
         unit: "kr"
     },
     {
-        id: 3, 
+        id: 2, 
         name: "Curse Jar", 
         img: "https://www.thetimes.co.uk/imageserver/image/methode%2Ftimes%2Fprod%2Fweb%2Fbin%2F67767244-0b54-11e7-85f8-9e9ad2f5cb5c.jpg?crop=3469%2C1951%2C311%2C2266&resize=685",
         description: "For whenever I say something inappropriate",
@@ -59,17 +60,59 @@ const styleDarkOverlay = {
     opacity: 0.3
 };
 
+const Warning = ({ show }) => {
+    if (!show) {
+        return null;
+    }
+    
+    return (
+        <div className="alert alert-error">
+            <p>Ooops, an error happened while trying to create the goal. Please make sure all fields are filled.</p>
+        </div>
+    );
+};
+
 class CreateGoalComponent extends React.Component {
+    constructor() {
+        super();
+
+        this.state = {
+            name: '',
+            amountLimit: '',
+            unit: '',
+            savingsAmount: '',
+            deadlineDate: '',
+            goalTypeId: 0
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
     componentWillMount() {
         this.cat = getCategory(parseInt(this.props.match.params.catID));
+        this.state.unit = this.cat.unit;
+        this.state.goalTypeId = this.cat.id;
     }
 
     componentDidMount() {
         window.$('.datepicker').datepicker();
     }
 
+    handleChange(ev) {
+        this.setState({ [ev.target.id]: ev.target.value });
+    }
+
+    createGoal() {
+        const i = window.M.Datepicker.getInstance(window.$('.datepicker'));
+        const selectedDate = new Date(i.$el.val());
+        // "yyyy-MM-dd" » `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+        this.state.deadlineDate = i.$el.val() && selectedDate.toLocaleDateString();
+        this.state.userId = 1;
+        this.props.postGoal(this.state);
+    }
+
     render() {
-        const { goBack } = this.props;
+        const { goBack, error } = this.props;
 
         return (
             <MenuWrapper heading="New Goal" onBack={goBack}>
@@ -87,46 +130,86 @@ class CreateGoalComponent extends React.Component {
                         <div className="row">
                             <div className="input-field col s12">
                                 <i className="material-icons prefix">place</i>
-                                <input id="name" type="text" className="validate" />
+                                <input 
+                                    id="name" 
+                                    type="text" 
+                                    className="validate" 
+                                    value={this.state.name}
+                                    onChange={this.handleChange} />
                                 <label htmlFor="name">Goal Name</label>
                             </div>
                         </div>
                         <div className="row">
                             <div className="input-field col s6">
                                 <i className="material-icons prefix">exposure</i>
-                                <input id="amount" type="number" className="validate" />
-                                <label htmlFor="amount">Amount/Limit</label>
+                                <input 
+                                    id="amountLimit" 
+                                    type="number" 
+                                    className="validate"
+                                    value={this.state.amountLimit} 
+                                    onChange={this.handleChange}/>
+                                <label htmlFor="amountLimit">Limit</label>
                             </div>
                             <div className="input-field col s6">
-                                <input disabled id="unit" type="text" className="validate" value={this.cat.unit} />
+                                <input 
+                                    disabled 
+                                    id="unit" 
+                                    type="text" 
+                                    className="validate" 
+                                    onChange={this.handleChange} 
+                                    value={this.state.unit} />
                                 <label htmlFor="unit" className="active">Unit</label>
                             </div>
                         </div>
                         <div className="row">
                             <div className="input-field col s12">
                                 <i className="material-icons prefix">event</i>
-                                <input id="endDate" type="text" className="datepicker" />
-                                <label htmlFor="endDate">End Date</label>
+                                <input 
+                                    id="deadlineDate" 
+                                    type="text" 
+                                    className="datepicker" />
+                                <label htmlFor="deadlineDate">End Date</label>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="input-field col s12">
+                                <i className="material-icons prefix">attach_money</i>
+                                <input 
+                                    id="savingsAmount" 
+                                    type="number" 
+                                    className="validate"
+                                    value={this.state.savingsAmount} 
+                                    onChange={this.handleChange}/>
+                                <label htmlFor="savingsAmount">Amount to save for each unit</label>
                             </div>
                         </div>
                     </form>
                 </div>
 
                 <div style={{ marginTop: "auto", backgroundColor: "#EE6E73", textAlign: "center", paddingTop: "8px", paddingBottom: "8px" }}>
-                    <a className="waves-effect waves-light btn red"><i className="material-icons right">send</i>Create Goal</a>
+                    <a className="waves-effect waves-light btn red" onClick={() => this.createGoal()}><i className="material-icons right">send</i>Create Goal</a>
                 </div>
+
+                <Warning show={error}/>
             </MenuWrapper>
         );
     }
 }
 
-const mapStateToProps = state => ( {} );
+const mapStateToProps = state => {
+    return {
+        ...state.goaltracker.goal.postGoal
+    }
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     goBack: (ev) => {
         ev.preventDefault();
         dispatch(push('/goals-categories'));
+    },
+    postGoal: (goal) => {
+        dispatch(actions.postGoal(goal));
     }
   }
 };
