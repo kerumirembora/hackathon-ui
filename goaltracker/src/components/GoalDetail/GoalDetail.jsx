@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { push } from 'react-router-redux';
 import MenuWrapper from './../MenuWrapper';
 import Metrics from './../Metrics';
 import ProgressIndicator from './../ProgressIndicator';
@@ -125,7 +126,7 @@ const GoalEventList = ({goalId}) => {
   );
 }
 
-const SocialSection = ({goalId}) => {
+const SocialSection = ({ goalId, addUsers }) => {
   var friendsData = getFriends(goalId);
 
   return (
@@ -141,7 +142,7 @@ const SocialSection = ({goalId}) => {
           ))
       }
       <div style={{ textAlign: "center" }}>
-        <a className="waves-effect waves-light btn red"><i className="material-icons left">group_add</i>Add Friends</a>
+        <a className="waves-effect waves-light btn red" onClick={() => addUsers(goalId)}><i className="material-icons left">group_add</i>Add Friends</a>
       </div>
     </div>
   );
@@ -169,6 +170,7 @@ class GoalDetailComponent extends React.Component {
   }
 
   render() {
+    const { addUsers } = this.props;
     const { socialActionsVisible } = this.state;
 
     return (
@@ -185,7 +187,7 @@ class GoalDetailComponent extends React.Component {
           <hr style={horizontalSeparator}/>
           <GoalEventList goalId={this.goal.id} />
           <hr style={horizontalSeparator}/>
-          <SocialSection goalId={this.goal.id} />
+          <SocialSection goalId={this.goal.id} addUsers={addUsers} />
 
           <div style={{ marginTop: "auto", backgroundColor: "#EE6E73", textAlign: "center", paddingTop: "8px", paddingBottom: "8px" }}>
             <a className="waves-effect waves-light btn red"><i className="material-icons left">add_box</i>Actions</a>
@@ -214,7 +216,11 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-
+  return {
+    addUsers: (goalId) => {
+      dispatch(push(`/add-friends/${goalId}`));
+    }
+  }
 }
 
 export const GoalDetail = withRouter(connect(mapStateToProps, mapDispatchToProps)(GoalDetailComponent));

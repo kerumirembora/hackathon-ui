@@ -4,6 +4,11 @@ export default {
       userData: {
         goals: []
       }
+    },
+    goal: {
+      goalAvailableUsers: {
+        users: []
+      }
     }
   }
 }

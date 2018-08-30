@@ -7,6 +7,7 @@ import {
   GoalsOverview,
   GoalsCategories,
   CreateGoal,
+  InviteFriends,
   Notifications
 } from './components';
 import configureStore from './store';
@@ -41,6 +42,11 @@ const routes = [
     path: '/notifications',
     component: Notifications,
     exact: true
+  },
+  {
+    path: '/add-friends/:goalID',
+    component: InviteFriends,
+    exact: false
   }
 ];
 
