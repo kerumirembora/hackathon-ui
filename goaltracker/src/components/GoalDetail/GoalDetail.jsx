@@ -157,7 +157,8 @@ class GoalDetailComponent extends React.Component {
   }
 
   componentWillMount() {
-    this.goal = getGoal(parseInt(this.props.match.params.goalID));
+    const goalId = parseInt(this.props.match.params.goalID);
+    this.props.getGoalDetail(goalId);
   }
 
   showSocialActions() {
@@ -170,22 +171,23 @@ class GoalDetailComponent extends React.Component {
 
   render() {
     const { socialActionsVisible } = this.state;
+    const { goal } = this.props;
 
     return (
       <MenuWrapper heading="Goal Detail">
         <div style={mainElementStyle}>
-          <div style={{ textAlign: "center", paddingTop: "10px", fontSize: "30px" }}>{this.goal.name}</div>
+          <div style={{ textAlign: "center", paddingTop: "10px", fontSize: "30px" }}>{goal.name}</div>
           <div style={{ display: "flex", paddingLeft: "15px", paddingTop: "10px" }}>
             <div style={{ paddingLeft: "0px", paddingTop: "0px", fontWeight: "bold" }}>Deadline:</div>
-            <div style={{ paddingLeft: "10px", paddingTop: "0px" }}>{this.goal.deadline.toLocaleDateString()}</div>
+            <div style={{ paddingLeft: "10px", paddingTop: "0px" }}>{goal.deadline.toLocaleDateString()}</div>
           </div>
           <div style={{ paddingLeft: "15px", paddingRight: "15px", marginTop: "10px" }}>
-            <Metrics metrics={this.goal.metrics} />
+            <Metrics metrics={goal.metrics} />
           </div>
           <hr style={horizontalSeparator}/>
-          <GoalEventList goalId={this.goal.id} />
+          <GoalEventList goalId={goal.id} />
           <hr style={horizontalSeparator}/>
-          <SocialSection goalId={this.goal.id} />
+          <SocialSection goalId={goal.id} />
 
           <div style={{ marginTop: "auto", backgroundColor: "#EE6E73", textAlign: "center", paddingTop: "8px", paddingBottom: "8px", position: "relative" }}>
             <a className="waves-effect waves-light btn red"><i className="material-icons left">add_box</i>Actions</a>
@@ -210,11 +212,17 @@ class GoalDetailComponent extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return ({});
+  return {
+    goal: state.goaltracker.user.userGoalData
+  };
 }
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    getGoalDetail: (goalId) => {
+      dispatch(actions.getUserGoalData({ goalId }));
+    }
+  };
 }
 
 export const GoalDetail = withRouter(connect(mapStateToProps, mapDispatchToProps)(GoalDetailComponent));

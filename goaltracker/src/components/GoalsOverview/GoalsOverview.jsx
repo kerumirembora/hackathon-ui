@@ -75,7 +75,7 @@ class GoalsOverviewComponent extends React.Component {
   }
 }
 
-const mapStateToProps = state => ( 
+const mapStateToProps = state => (
   {
     goalData: state.goaltracker.user.userData.goals
   } 

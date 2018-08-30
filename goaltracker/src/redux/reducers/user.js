@@ -10,6 +10,16 @@ const userData = (state = {}, action) => {
   }
 }
 
+const userGoalData = (state = {}, action) => {
+  switch (action.type) {
+    case types.USER_GET_GOAL_DATA_DONE:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
-  userData
+  userData,
+  userGoalData
 });
