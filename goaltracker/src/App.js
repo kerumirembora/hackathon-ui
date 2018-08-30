@@ -5,8 +5,9 @@ import logo from './logo.svg';
 import { GoalDetail, GoalsOverview, GoalsCategories, CreateGoal } from './components';
 import configureStore from './store';
 import './App.css';
+import initialState from './redux/initialState';
 
-const storeAndHistory = configureStore();
+const storeAndHistory = configureStore(initialState);
 
 const routes = [
   {

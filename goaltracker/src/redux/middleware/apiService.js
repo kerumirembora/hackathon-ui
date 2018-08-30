@@ -22,7 +22,7 @@ export const fetchFromApi = ({ path, method, body, headerData }) => {
   const options = { path, method, body, headerData };
 
   const opt = getOptions(options);
-  fetch(getUrl(path), opt)
+  return fetch(getUrl(path), opt)
     .then((response) => {
       if (response.ok) {
         return response.json();

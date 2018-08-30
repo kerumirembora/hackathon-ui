@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import thunkMiddleware from 'redux-thunk';
-import { goaltracker } from './redux/reducers';
+import * as reducers from './redux/reducers';
 import { createHashHistory as createHistory } from 'history';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import { createEpicMiddleware } from 'redux-observable';
@@ -9,7 +9,7 @@ import rootEpic from './redux/epics';
 
 let storeAndHistoryInstance = null;
 
-export default function configureStore(initialState={}) {
+export default function configureStore(initialState) {
   if (storeAndHistoryInstance) {
     return storeAndHistoryInstance;
   }
@@ -30,7 +30,7 @@ export default function configureStore(initialState={}) {
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   /* eslint-enable */
 
-  const rootReducer = combineReducers({ ...goaltracker, router: routerReducer });
+  const rootReducer = combineReducers({ ...reducers, router: routerReducer });
 
   const store = createStore(
     rootReducer, initialState, composeEnhancers(applyMiddleware(...middleware))

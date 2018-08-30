@@ -4,11 +4,7 @@ import { push } from 'react-router-redux';
 import MenuWrapper from './../MenuWrapper';
 import Metrics from './../Metrics';
 import ProgressIndicator from './../ProgressIndicator';
-
-const goalData = [
-  { id: 1, name: "Facebook", unit: "mins", amount: 20, limit: 100 },
-  { id: 2, name: "Curse Jar", unit: "curses", amount: 3, limit: 30 }
-];
+import { actions } from '../../redux/actions/user';
 
 const newGoalData = [
   { id: 1, name: "Facebook", deadline: new Date('2018-09-03'), metrics: [
@@ -50,18 +46,23 @@ const GoalsOverviewItem = ({ openGoal, id, name, deadline, metrics }) => (
 );
 
 class GoalsOverviewComponent extends React.Component {
+  componentWillMount() {
+    this.props.getUserData("JohnDoe"); //TODO keep hardcoded for prototype?
+  }
+
   render() {
     const {
       openGoal,
-      chooseCategory
+      chooseCategory,
+      goalData
     } = this.props;
     
     return (
       <MenuWrapper heading="Goals Overview">
         <div style={listStyle}>
           {
-            newGoalData.map(goal => 
-              (<GoalsOverviewItem id={goal.id} name={goal.name} metrics={goal.metrics} deadline={goal.deadline} openGoal={openGoal} key={ "goalElement_" + goal.id } />)
+            goalData.map(goal => 
+              (<GoalsOverviewItem id={goal.id} name={goal.name} metrics={goal.metrics} deadline={new Date(goal.deadline)} openGoal={openGoal} key={ "goalElement_" + goal.id } />)
             )
           }
         </div>
@@ -74,10 +75,17 @@ class GoalsOverviewComponent extends React.Component {
   }
 }
 
-const mapStateToProps = state => ( {} );
+const mapStateToProps = state => ( 
+  {
+    goalData: state.goaltracker.user.userData.goals
+  } 
+);
 
 const mapDispatchToProps = dispatch => {
   return {
+    getUserData: (user) => {
+      dispatch(actions.getUserData({ user }));
+    },
     openGoal: (id) => {
       dispatch(push(`/goals/${id}`));
     },

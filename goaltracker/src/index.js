@@ -9,9 +9,10 @@ import configureStore from './store';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import initialState from './redux/initialState';
 
 ReactDOM.render(
-  <Provider store={configureStore().store}>
+  <Provider store={configureStore(initialState).store}>
     <App />
   </Provider>
   , 

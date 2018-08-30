@@ -1,15 +1,8 @@
 import { combineReducers } from 'redux';
+import user from './user';
 
-const bsReducer = (state = {}, action) => {
-  switch (action.type) {
-   case 'BS_ACTION':
-    return {
-     result: action.payload
-    }
-   default:
-    return state
-  }
-}
+const reducers = combineReducers({ 
+  user 
+});
 
-const reducers = combineReducers({ bsReducer });
-export { reducers as goaltracker};
+export { reducers as goaltracker };

@@ -33,6 +33,20 @@ const eventData = [
   { goalId: 2, date: new Date('2018-08-26T18:37:00'), message:'You have increased your "curses" counter by 1.', unit: "curses", progress: 1 }
 ];
 
+const socialData = [
+  { goalId: 1, friends: [] },
+  { goalId: 2, friends: [ { username: "Mascarenhas" }, { username: "Pacheco" } ]},
+  { goalId: 3, friends: [ { username: "Mascarenhas" } ]}
+];
+
+const getFriends = (goalId) => {
+  for (let i = 0; i < socialData.length; i++) {
+    var element = socialData[i];
+    if (element.goalId === goalId)
+      return element.friends;
+  }
+}
+
 const getGoal = (id) => {
   for (let i = 0; i < newGoalData.length; i++) {
     var element = newGoalData[i];
@@ -71,32 +85,48 @@ const GoalEventList = ({goalId}) => {
   return (
     <div>
       <div style= {{ fontSize: "18px", paddingLeft: "10px" }}>Last events</div>
-      <div style= {{ margin: "10px", border: "solid 1px gray" }}>
       {
-        goalEventData.map((goal, index) => 
-          (
-            <div style={{ paddingLeft: "5px", paddingTop: "2px", paddingBottom: "2px", display: "flex", backgroundColor: alternatingColor[index % alternatingColor.length] }}
-                key={"event_" + goal.id + "_" + goal.date.toString()}> 
-              <div style={{ width: "25%", fontSize: "8pt" }}>{goal.date.toLocaleString()}</div>
-              <div style={{ width: "75%", fontSize: "8pt" }}>{goal.message}</div>
-            </div>
-          )
-        )
+        (goalEventData.length === 0) 
+        ? (<div style={{ margin: "10px" }}>No events to show for this goal yet.</div>)
+        : (<div style= {{ margin: "10px", border: "solid 1px gray" }}>
+          {
+            goalEventData.map((goal, index) => 
+              (
+                <div style={{ paddingLeft: "5px", paddingTop: "2px", paddingBottom: "2px", display: "flex", backgroundColor: alternatingColor[index % alternatingColor.length] }}
+                    key={"event_" + goal.id + "_" + goal.date.toString()}> 
+                  <div style={{ width: "25%", fontSize: "8pt" }}>{goal.date.toLocaleString()}</div>
+                  <div style={{ width: "75%", fontSize: "8pt" }}>{goal.message}</div>
+                </div>
+              )
+            )
+          }
+        </div>)
       }
-      </div>
     </div>
   );
 }
 
-const SocialSection = () => (
-  <div>
-    <div style={{ fontSize: "18px", paddingLeft: "10px" }}>Social</div>
-    <div style={{ margin: "10px", fontSize: "9pt" }}>No friends added to goal yet; add friends to track goals as a group.</div>
-    <div style={{ textAlign: "center" }}>
-      <a className="waves-effect waves-light btn red"><i className="material-icons left">group_add</i>Add Friends</a>
+const SocialSection = ({goalId}) => {
+  var friendsData = getFriends(goalId);
+
+  return (
+    <div>
+      <div style={{ fontSize: "18px", paddingLeft: "10px" }}>Social</div>
+      {
+        (friendsData.length === 0) 
+          ? (<div style={{ margin: "10px" }}>No friends added to goal yet; add friends to track goals as a group.</div>)
+          : friendsData.map(element => (
+            <div style={{ margin: "10px", width: "100%" }}>
+              <i className="material-icons left">person</i>{element.username}
+            </div>
+          ))
+      }
+      <div style={{ textAlign: "center" }}>
+        <a className="waves-effect waves-light btn red"><i className="material-icons left">group_add</i>Add Friends</a>
+      </div>
     </div>
-  </div>
-);
+  );
+}
 
 class GoalDetailComponent extends React.Component {
   componentWillMount() {
@@ -104,7 +134,7 @@ class GoalDetailComponent extends React.Component {
   }
 
   render() {
-    const { testUserPost } = this.props;
+    const { getUserData } = this.props;
 
     return (
       <MenuWrapper heading="Goal Detail">
@@ -120,10 +150,10 @@ class GoalDetailComponent extends React.Component {
           <hr style={horizontalSeparator}/>
           <GoalEventList goalId={this.goal.id} />
           <hr style={horizontalSeparator}/>
-          <SocialSection />
+          <SocialSection goalId={this.goal.id} />
 
           <div style={{ marginTop: "auto", backgroundColor: "#EE6E73", textAlign: "center", paddingTop: "8px", paddingBottom: "8px" }}>
-            <a className="waves-effect waves-light btn red" onClick={() => testUserPost("JohnDoe")}><i className="material-icons left">add_box</i>Actions</a>
+            <a className="waves-effect waves-light btn red"><i className="material-icons left">add_box</i>Actions</a>
             &nbsp;&nbsp;
             <a className="waves-effect waves-light btn red"><i className="material-icons left">group</i>Social</a>
           </div>
@@ -138,11 +168,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-  return {
-    testUserPost: (user) => {
-      dispatch(actions.postUser({ user }));
-    }
-  }
+
 }
 
 export const GoalDetail = withRouter(connect(mapStateToProps, mapDispatchToProps)(GoalDetailComponent));

@@ -1,17 +1,17 @@
 const actionTypePrefix = 'user';
 
-const POST_USER = `${actionTypePrefix}/post`;
-const POST_USER_DONE = `${actionTypePrefix}/post/done`;
-const POST_USER_ERROR = `${actionTypePrefix}/post/error`;
+const USER_GET_DATA = `${actionTypePrefix}/getData`;
+const USER_GET_DATA_DONE = `${actionTypePrefix}/getData/done`;
+const USER_GET_DATA_ERROR = `${actionTypePrefix}/getData/error`;
 
-const postUser = payload => ({ type: POST_USER, payload });
+const getUserData = payload => ({ type: USER_GET_DATA, payload });
 
 export const types = {
-  POST_USER,
-  POST_USER_DONE,
-  POST_USER_ERROR
+  USER_GET_DATA,
+  USER_GET_DATA_DONE,
+  USER_GET_DATA_ERROR
 };
 
 export const actions = {
-  postUser
+  getUserData
 }

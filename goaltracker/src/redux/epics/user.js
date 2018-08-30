@@ -4,14 +4,14 @@ import { fetchFromApi } from '../middleware/apiService';
 import * as endpoints from "../backend-endpoints";
 import { types } from "../actions/user";
 
-export const fetchDataEpic = (actionType, work, okActionCreator, errorActionCreator) => (action$) => {
+export const fetchDataEpic = (actionType, work, okActionCreator, errorActionCreator) => (action$, store) => {
   return  action$.ofType(actionType)
-     .flatMap(action => (work(action))
+     .mergeMap(action => (work(action, store))
        .then(okActionCreator)
        .catch(errorActionCreator));
 }
 
-const postUserAPI = action => {
+const postUserAPI = (action, store) => {
   const requestBody = {
     UserName: action.payload.user
   }
@@ -21,14 +21,14 @@ const postUserAPI = action => {
       method: 'POST',
       body: requestBody
     })
-  ]).then(result => result.isError);
+  ]).then(result => result[0]);
 }
 
 export const postUserEpic = fetchDataEpic(
-  types.POST_USER,
+  types.USER_GET_DATA,
   postUserAPI,
-  payload => ({ type: types.POST_USER_DONE, payload }),
-  payload => ({ type: types.POST_USER_ERROR, payload })
+  payload => ({ type: types.USER_GET_DATA_DONE, payload }),
+  payload => ({ type: types.USER_GET_DATA_ERROR, payload })
 );
 
 const userEpic = combineEpics(postUserEpic);
