@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import user from './user';
 import goal from './goal';
+import user from './user';
 
 const reducers = combineReducers({ 
-  user,
-  goal
+  goal, 
+  user 
 });
 
 export { reducers as goaltracker };

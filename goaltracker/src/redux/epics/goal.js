@@ -12,6 +12,37 @@ export const fetchDataEpic = (actionType, work, okActionCreator, errorActionCrea
        .catch(errorActionCreator));
 }
 
+const getAvailableUsersAPI = (action, store) => {
+  const path = endpoints.availableSubscribers(action.payload.userId, action.payload.userGoalId);
+  return Promise.all([
+    fetchFromApi({
+      path: path, 
+      method: 'GET'
+    })
+  ]).then(result => result[0]);
+}
+
+export const getAvailableUsersEpic = fetchDataEpic(
+  types.GOAL_GET_AVAILABLE_USERS,
+  getAvailableUsersAPI,
+  payload => ({ type: types.GOAL_GET_AVAILABLE_USERS_DONE, payload }),
+  payload => ({ type: types.GOAL_GET_AVAILABLE_USERS_ERROR, payload })
+);
+
+const inviteUserAPI = (action, store) => {
+  const path = endpoints.addSubscriber(action.payload.userId, action.payload.userGoalId);
+  const body = {
+    userId: action.payload.inviteUserId
+  }
+  return Promise.all([
+    fetchFromApi({
+      path: path, 
+      method: 'PUT',
+      body: body
+    })
+  ]).then(result => result[0]);
+}
+
 const postGoalAPI = (action, store) => {
   const requestBody = action.payload;
 
@@ -24,6 +55,13 @@ const postGoalAPI = (action, store) => {
   ]).then(result => result[0]);
 }
 
+export const inviteUserEpic = fetchDataEpic(
+  types.GOAL_INVITE_USER,
+  inviteUserAPI,
+  payload => push(`/goals/${payload.userGoalId}`),
+  payload => ({ type: types.GOAL_INVITE_USER_ERROR, payload })
+);
+
 export const postGoalEpic = fetchDataEpic(
   types.GOAL_NEW,
   postGoalAPI,
@@ -32,5 +70,5 @@ export const postGoalEpic = fetchDataEpic(
   payload => ({ type: types.GOAL_NEW_ERROR, payload })
 );
 
-const goalEpic = combineEpics(postGoalEpic);
-export default goalEpic;
+const userEpic = combineEpics(getAvailableUsersEpic, inviteUserEpic, postGoalEpic);
+export default userEpic;
