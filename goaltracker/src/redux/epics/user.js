@@ -31,5 +31,21 @@ export const postUserEpic = fetchDataEpic(
   payload => ({ type: types.USER_GET_DATA_ERROR, payload })
 );
 
-const userEpic = combineEpics(postUserEpic);
+const getUserGoalDetailsAPI = (action, store) => {  
+  return Promise.all([
+    fetchFromApi({
+      path: endpoints.userGoalDetails(store.goaltracker.user.userData.id, action.goalId), 
+      method: 'GET'
+    })
+  ]).then(result => result[0]);
+}
+
+export const getUserGoalDetailsEpic = fetchDataEpic(
+  types.USER_GET_GOAL_DATA,
+  getUserGoalDetailsAPI,
+  payload => ({ type: types.USER_GET_GOAL_DATA_DONE, payload }),
+  payload => ({ type: types.USER_GET_GOAL_DATA_ERROR, payload })
+);
+
+const userEpic = combineEpics(postUserEpic, getUserGoalDetailsEpic);
 export default userEpic;

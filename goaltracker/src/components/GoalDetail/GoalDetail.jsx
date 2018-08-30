@@ -159,7 +159,7 @@ class GoalDetailComponent extends React.Component {
 
   componentWillMount() {
     const goalId = parseInt(this.props.match.params.goalID);
-    this.props.getGoalDetail(goalId);
+    this.props.getGoalDetails(goalId);
   }
 
   showSocialActions() {
@@ -181,7 +181,7 @@ class GoalDetailComponent extends React.Component {
           <div style={{ textAlign: "center", paddingTop: "10px", fontSize: "30px" }}>{goal.name}</div>
           <div style={{ display: "flex", paddingLeft: "15px", paddingTop: "10px" }}>
             <div style={{ paddingLeft: "0px", paddingTop: "0px", fontWeight: "bold" }}>Deadline:</div>
-            <div style={{ paddingLeft: "10px", paddingTop: "0px" }}>{goal.deadline.toLocaleDateString()}</div>
+            <div style={{ paddingLeft: "10px", paddingTop: "0px" }}>{new Date(goal.deadlineDate).toLocaleDateString()}</div>
           </div>
           <div style={{ paddingLeft: "15px", paddingRight: "15px", marginTop: "10px" }}>
             <Metrics metrics={goal.metrics} />
@@ -224,7 +224,7 @@ const mapDispatchToProps = dispatch => {
     addUsers: (goalId) => {
       dispatch(push(`/add-friends/${goalId}`));
     },
-    getGoalDetail: (goalId) => {
+    getGoalDetails: (goalId) => {
       dispatch(actions.getUserGoalData({ goalId }));
     }
   };

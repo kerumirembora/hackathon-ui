@@ -7,4 +7,6 @@ export const availableSubscribers = (userId, userGoalId) => {
 export const addSubscriber = (userId, userGoalId) => {
   return "api/User/" + userId + "/usergoal/" + userGoalId + "/subscriber";
 }
+
 export const goalPost = userId => `api/user/${userId}/usergoal`;
+export const userGoalDetails = (userId, goalId) => `api/usergoal/${goalId}?loggedUserId=${userId}`;
