@@ -62,7 +62,7 @@ class GoalsOverviewComponent extends React.Component {
         <div style={listStyle}>
           {
             goalData.map(goal => 
-              (<GoalsOverviewItem id={goal.id} name={goal.name} metrics={goal.metrics} deadline={new Date(goal.deadline)} openGoal={openGoal} key={ "goalElement_" + goal.id } />)
+              (<GoalsOverviewItem id={goal.goalId} name={goal.name} metrics={goal.metrics} deadline={new Date(goal.deadline)} openGoal={openGoal} key={ "goalElement_" + goal.goalId } />)
             )
           }
         </div>
