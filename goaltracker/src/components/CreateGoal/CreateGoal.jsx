@@ -171,7 +171,7 @@ class CreateGoalComponent extends React.Component {
                                 <label htmlFor="deadlineDate">End Date</label>
                             </div>
                         </div>
-                        <div className="row">
+                        <div className={`row${this.cat.id === 3 ? ' hide': ''}`}>
                             <div className="input-field col s12">
                                 <i className="material-icons prefix">attach_money</i>
                                 <input 
