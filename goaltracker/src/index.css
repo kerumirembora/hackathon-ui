@@ -3,3 +3,19 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+
+.alert {
+  position: absolute;
+  bottom: 150px;
+  background-color: #616161;
+  width: 100%;
+  max-width: 480px;
+  padding: 7px 15px;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.alert-error {
+  background-color: #c32c2c;
+}
