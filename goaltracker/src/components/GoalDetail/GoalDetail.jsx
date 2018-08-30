@@ -5,6 +5,7 @@ import MenuWrapper from './../MenuWrapper';
 import Metrics from './../Metrics';
 import ProgressIndicator from './../ProgressIndicator';
 import { actions } from '../../redux/actions/user';
+import './GoalDetail.css';
 
 const goalData = [
   { id: 1, name: "Facebook", unit: "mins", progress: 20, limit: 100 },
@@ -71,6 +72,24 @@ const horizontalSeparator = {
   marginBottom: "10px",
 }
 
+const darkAppOverlayStyle = {
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+  top: 0,
+  left: 0,
+  backgroundColor: "#000",
+  zIndex: 5,
+  opacity: "0.35"
+};
+const socialActionsContainerStyle = {
+  zIndex: 10,
+  position: "absolute",
+  width: "100%",
+  top: "-165px",
+  borderRadius: "10px"
+};
+
 const getGoalEvents = (goalId) => {
   return eventData
     .filter((element) => element.goalId === goalId)
@@ -129,12 +148,28 @@ const SocialSection = ({goalId}) => {
 }
 
 class GoalDetailComponent extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      socialActionsVisible: false
+    };
+  }
+
   componentWillMount() {
     this.goal = getGoal(parseInt(this.props.match.params.goalID));
   }
 
+  showSocialActions() {
+    this.setState({ socialActionsVisible: true });
+  }
+
+  hideSocialActions() {
+    this.setState({ socialActionsVisible: false });
+  }
+
   render() {
-    const { getUserData } = this.props;
+    const { socialActionsVisible } = this.state;
 
     return (
       <MenuWrapper heading="Goal Detail">
@@ -154,10 +189,21 @@ class GoalDetailComponent extends React.Component {
 
           <div style={{ marginTop: "auto", backgroundColor: "#EE6E73", textAlign: "center", paddingTop: "8px", paddingBottom: "8px" }}>
             <a className="waves-effect waves-light btn red"><i className="material-icons left">add_box</i>Actions</a>
+
             &nbsp;&nbsp;
-            <a className="waves-effect waves-light btn red"><i className="material-icons left">group</i>Social</a>
+            <a className="waves-effect waves-light btn red" onClick={() => this.showSocialActions()}><i className="material-icons left">group</i>Social</a>
+
+            <div className={`social-actions-wrapper${socialActionsVisible ? '' : ' hide'}`}>
+              <div className="collection center-align social-actions-container" style={socialActionsContainerStyle}>
+                <a className="collection-item">Snitch</a>
+                <a className="collection-item">Encourage</a>
+                <a className="collection-item">Brag</a>
+              </div>
+            </div>            
           </div>
         </div>
+
+        <div className={`dark-app-overlay${socialActionsVisible ? '' : ' hide'}`} style={darkAppOverlayStyle} onClick={()=> this.hideSocialActions()}></div>
       </MenuWrapper>
     );
   }
