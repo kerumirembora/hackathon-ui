@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import MenuWrapper from './../MenuWrapper';
 import { actions } from '../../redux/actions/goal';
+import MapImg from './../../work map.png';
 
 const categories = [
     { 
@@ -72,6 +73,56 @@ const Warning = ({ show }) => {
     );
 };
 
+const locationLabelStyle = {
+    fontSize: "1rem"
+};
+const mapImgStyle = {
+    height: "165px",
+    background: `url('${MapImg}') -80px -50px`
+};
+
+class LocationComponent extends React.Component {
+    constructor() {
+        super();
+
+        this.state = {
+            setLocation: false
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(e) {
+        this.setState({ setLocation: e.target.checked });
+    }
+
+    render() {
+        return (
+            <div>
+                <div className="row">
+                    <div className="col s9 offset-s1">
+                        <label htmlFor="location" style={locationLabelStyle}>Set a Specific location</label>
+                    </div>
+                    <div className="col s2">
+                        <div className="switch">
+                            <label>
+                                <input id="location" type="checkbox" onChange={this.handleChange} />
+                                <span className="lever"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div className={`row${this.state.setLocation ? '' : ' hide'}`}>
+                    <div className="col s10 offset-s1">
+                        {/* <img src={require('./../../work map.png')} alt="location" style={mapImgStyle} /> */}
+                        <div style={mapImgStyle}></div>
+                    </div>                    
+                </div>
+            </div>
+        );
+    }
+}
+
 class CreateGoalComponent extends React.Component {
     constructor() {
         super();
@@ -112,7 +163,7 @@ class CreateGoalComponent extends React.Component {
     }
 
     render() {
-        const { goBack, error } = this.props;
+        const { goBack, error } = this.props;        
 
         return (
             <MenuWrapper heading="New Goal" onBack={goBack}>
@@ -182,6 +233,9 @@ class CreateGoalComponent extends React.Component {
                                     onChange={this.handleChange}/>
                                 <label htmlFor="savingsAmount">Amount to save for each unit</label>
                             </div>
+                        </div>
+                        <div className={`row${this.cat.id !== 1 ? ' hide': ''}`}>
+                            <LocationComponent />
                         </div>
                     </form>
                 </div>
