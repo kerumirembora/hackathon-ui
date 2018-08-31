@@ -6,56 +6,9 @@ import MenuWrapper from './../MenuWrapper';
 import Metrics from './../Metrics';
 import ProgressIndicator from './../ProgressIndicator';
 import { actions } from '../../redux/actions/user';
+import { actions as goalActions } from '../../redux/actions/goal';
 import './GoalDetail.css';
 
-const goalData = [
-  { id: 1, name: "Facebook", unit: "mins", progress: 20, limit: 100 },
-  { id: 2, name: "Curse Jar", unit: "curses", progress: 3, limit: 30 }
-];
-
-const newGoalData = [
-  { id: 1, name: "Facebook", deadline: new Date('2018-09-03'), metrics: [
-    { description: "Time spent on facebook", unit: "mins", amount: 20, limit: 100 },
-    { description: "Amount saved", unit: "NOK", amount: 10 } 
-  ]},
-  { id: 2, name: "Curse Jar", deadline: new Date('2018-09-03'), metrics: [
-    { description: "Curses said", unit: "curses", amount: 3, limit: 30 },
-    { description: "Amount saved", unit: "NOK", amount: 30 } 
-  ]},
-  { id: 3, name: "Test Goal", deadline: new Date('2018-09-03'), metrics: [
-    { description: "Test metric", unit: "unit", amount: 7, limit: 27 }
-  ]}
-];
-
-const eventData = [
-  { goalId: 1, date: new Date('2018-08-25T18:27:00'), message:'Your "mins" counter has been increased by 3.', unit: "mins", progress: 3 },
-  { goalId: 1, date: new Date('2018-08-27T16:22:00'), message:'Your "mins" counter has been increased by 17.', unit: "mins", progress: 17 },
-  { goalId: 2, date: new Date('2018-08-25T21:27:00'), message:'You have increased your "curses" counter by 1.', unit: "curses", progress: 1 },
-  { goalId: 2, date: new Date('2018-08-26T18:31:00'), message:'You have increased your "curses" counter by 1.', unit: "curses", progress: 1 },
-  { goalId: 2, date: new Date('2018-08-26T18:37:00'), message:'You have increased your "curses" counter by 1.', unit: "curses", progress: 1 }
-];
-
-const socialData = [
-  { goalId: 1, friends: [] },
-  { goalId: 2, friends: [ { username: "Mascarenhas" }, { username: "Pacheco" } ]},
-  { goalId: 3, friends: [ { username: "Mascarenhas" } ]}
-];
-
-const getFriends = (goalId) => {
-  for (let i = 0; i < socialData.length; i++) {
-    var element = socialData[i];
-    if (element.goalId === goalId)
-      return element.friends;
-  }
-}
-
-const getGoal = (id) => {
-  for (let i = 0; i < newGoalData.length; i++) {
-    var element = newGoalData[i];
-    if (element.id === id)
-      return element;
-  }
-}
 
 const mainElementStyle = {
   backgroundColor: "white",
@@ -91,12 +44,6 @@ const socialActionsContainerStyle = {
   borderRadius: "10px"
 };
 
-const getGoalEvents = (goalId) => {
-  return eventData
-    .filter((element) => element.goalId === goalId)
-    .sort((a, b) => b.date - a.date);
-}
-
 const alternatingColor = [ 'gainsboro', 'white' ];
 
 const GoalEventList = ({ goalEventData }) => {
@@ -125,8 +72,6 @@ const GoalEventList = ({ goalEventData }) => {
 }
 
 const SocialSection = ({ friendsData, goalId, addUsers }) => {
-  //var friendsData = getFriends(goalId);
-
   return (
     <div>
       <div style={{ fontSize: "18px", paddingLeft: "10px" }}>Social</div>
@@ -151,7 +96,9 @@ class GoalDetailComponent extends React.Component {
     super();
 
     this.state = {
-      socialActionsVisible: false
+      socialActionsVisible: false,
+      updateAmount: '',
+      userToSnitch: ''
     };
   }
 
@@ -168,9 +115,31 @@ class GoalDetailComponent extends React.Component {
     this.setState({ socialActionsVisible: false });
   }
 
+  updateAmountChanged(evt) {
+    this.setState({
+      updateAmount: evt.target.value
+    });
+  }
+
+  getUsersAsOptions(friendsList) {
+    const userOptions = [];
+    for (let i = 0; i < friendsList.length; i++) {
+      userOptions.push(<option key={friendsList[i].id} value={friendsList[i].id}>{friendsList[i].name}</option>)
+    }
+    return userOptions;
+  }
+
+  userToSnitchChanged(evt) {
+    this.setState({
+      userToSnitch: evt.target.value
+    });
+  }
+
   render() {
-    const { addUsers, goal } = this.props;
+    const { addUsers, goal, updateGoalProgress } = this.props;
     const { socialActionsVisible } = this.state;
+
+    const friendsList = goal.participatingUsers.filter(el => el.id !== this.props.userId);
 
     return (
       <MenuWrapper heading="Goal Detail">
@@ -183,25 +152,44 @@ class GoalDetailComponent extends React.Component {
           <div style={{ paddingLeft: "15px", paddingRight: "15px", marginTop: "10px" }}>
             <Metrics metrics={goal.metrics} />
           </div>
+          
+          <hr style={horizontalSeparator}/>
+          <div>
+            <div style={{ fontSize: "18px", paddingLeft: "10px" }}>Manual actions</div>
+            <div style={{ display: "flex", margin: "10px", alignItems: "center" }}>
+              <div style={{ width: "17%", fontWeight: "bold" }}>Increase</div>
+              <div style={{ width: "40%" }}>
+                <input type="text" name="Amount" className="browser-default" value={this.state.updateAmount} onChange={evt => this.updateAmountChanged(evt)}
+                      style={{ width: "60%", borderColor: "gray", borderWidth: "1px", height: "25px" }}></input>&nbsp;&nbsp;curses
+              </div>
+              <div style={{ paddingLeft: "10px" }}>
+                <a className="waves-effect waves-light btn-small red" onClick={() => updateGoalProgress(this.props.match.params.goalID, this.props.userId, this.state.updateAmount)}>Update</a>
+              </div>
+            </div>
+          </div>
+
+          <hr style={horizontalSeparator}/>
+          <div>
+            <div style={{ fontSize: "18px", paddingLeft: "10px" }}>Group actions</div>
+            <div style={{ display: "flex", margin: "10px", alignItems: "center" }}>
+              <div style={{ width: "17%", fontWeight: "bold" }}>Snitch</div>
+              <div style={{ width: "40%" }}>
+                <select name="User" className="browser-default" style={{ height: "25px", borderColor: "gray", paddingTop: "0px" }} onChange={evt => this.userToSnitchChanged(evt)}>
+                  <option value="">Select an user</option>
+                  {this.getUsersAsOptions(friendsList)}
+                </select>
+              </div>
+              <div style={{ paddingLeft: "10px" }}>
+                <a className="waves-effect waves-light btn-small red" onClick={() => updateGoalProgress(this.props.match.params.goalID, this.state.userToSnitch, 1)}>Report</a>
+              </div>
+            </div>
+          </div>
+
           <hr style={horizontalSeparator}/>
           <GoalEventList goalEventData={goal.loggedUserEvents} />
+
           <hr style={horizontalSeparator}/>
-          <SocialSection goalId={goal.id} addUsers={addUsers} friendsData={goal.participatingUsers.filter(el => el.id !== this.props.userId)} />
-
-          <div style={{ marginTop: "auto", backgroundColor: "#EE6E73", textAlign: "center", paddingTop: "8px", paddingBottom: "8px", position: "relative" }}>
-            <a className="waves-effect waves-light btn red"><i className="material-icons left">add_box</i>Actions</a>
-
-            &nbsp;&nbsp;
-            <a className="waves-effect waves-light btn red" onClick={() => this.showSocialActions()}><i className="material-icons left">group</i>Social</a>
-
-            <div className={`social-actions-wrapper${socialActionsVisible ? '' : ' hide'}`}>
-              <div className="collection center-align social-actions-container" style={socialActionsContainerStyle}>
-                <a className="collection-item">Snitch</a>
-                <a className="collection-item">Encourage</a>
-                <a className="collection-item">Brag</a>
-              </div>
-            </div>            
-          </div>
+          <SocialSection goalId={goal.id} addUsers={addUsers} friendsData={friendsList} />
         </div>
 
         <div className={`dark-app-overlay${socialActionsVisible ? '' : ' hide'}`} style={darkAppOverlayStyle} onClick={()=> this.hideSocialActions()}></div>
@@ -224,6 +212,9 @@ const mapDispatchToProps = dispatch => {
     },
     getGoalDetails: (goalId, userId) => {
       dispatch(actions.getUserGoalData({ goalId, userId }));
+    },
+    updateGoalProgress: (userGoalId, subscriber, amount) => {
+      dispatch(goalActions.updateProgress({ userGoalId, subscriber, amount }));
     }
   };
 }

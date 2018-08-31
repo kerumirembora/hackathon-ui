@@ -43,6 +43,13 @@ const inviteUserAPI = (action, store) => {
   ]).then(result => result[0]);
 }
 
+export const inviteUserEpic = fetchDataEpic(
+  types.GOAL_INVITE_USER,
+  inviteUserAPI,
+  payload => push(`/goals/${payload.userGoalId}`),
+  payload => ({ type: types.GOAL_INVITE_USER_ERROR, payload })
+);
+
 const postGoalAPI = (action, store) => {
   const requestBody = action.payload;
 
@@ -55,13 +62,6 @@ const postGoalAPI = (action, store) => {
   ]).then(result => result[0]);
 }
 
-export const inviteUserEpic = fetchDataEpic(
-  types.GOAL_INVITE_USER,
-  inviteUserAPI,
-  payload => push(`/goals/${payload.userGoalId}`),
-  payload => ({ type: types.GOAL_INVITE_USER_ERROR, payload })
-);
-
 export const postGoalEpic = fetchDataEpic(
   types.GOAL_NEW,
   postGoalAPI,
@@ -70,5 +70,27 @@ export const postGoalEpic = fetchDataEpic(
   payload => ({ type: types.GOAL_NEW_ERROR, payload })
 );
 
-const userEpic = combineEpics(getAvailableUsersEpic, inviteUserEpic, postGoalEpic);
+const updateProgressAPI = (action, store) => {
+  const path = endpoints.updateProgress(action.payload.userGoalId, action.payload.subscriber);
+  const requestBody = {
+    completedAmountIncrement: action.payload.amount
+  }
+
+  return Promise.all([
+    fetchFromApi({
+      path: path, 
+      method: 'POST',
+      body: requestBody
+    })
+  ]).then(result => result[0]);
+}
+
+export const updateProgressEpic = fetchDataEpic(
+  types.UPDATE_PROGRESS,
+  updateProgressAPI,
+  payload => push('/goals/' + 1),
+  payload => ({ type: types.UPDATE_PROGRESS_ERROR, payload })
+);
+
+const userEpic = combineEpics(getAvailableUsersEpic, inviteUserEpic, postGoalEpic, updateProgressEpic);
 export default userEpic;

@@ -10,3 +10,4 @@ export const addSubscriber = (userId, userGoalId) => {
 
 export const goalPost = userId => `api/user/${userId}/usergoal`;
 export const userGoalDetails = (userId, goalId) => `api/usergoal/${goalId}?loggedUserId=${userId}`;
+export const updateProgress = (userGoalId, subscriber) => `api/usergoal/${userGoalId}/subscriber/${subscriber}`;
