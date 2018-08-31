@@ -8,7 +8,8 @@ import {
   GoalsCategories,
   CreateGoal,
   InviteFriends,
-  Notifications
+  Notifications,
+  FacebookSnitcher
 } from './components';
 import configureStore from './store';
 import './App.css';
@@ -47,6 +48,11 @@ const routes = [
     path: '/add-friends/:goalID',
     component: InviteFriends,
     exact: false
+  },
+  {
+    path: '/fb',
+    component: FacebookSnitcher,
+    exact: true
   }
 ];
 
